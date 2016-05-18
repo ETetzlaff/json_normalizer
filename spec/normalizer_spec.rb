@@ -24,4 +24,8 @@ describe Json_Normalizer do
   it 'successfully translates given the mapping' do
     expect(@normalizer.translate({given: 'test'})).to eql(JSON.parse({returned: 'test'}.to_json))
   end
+
+  it 'successfully translates nested' do
+    expect(@normalizer.translate({morphed: {to: 'test'}})).to eql('something')
+  end
 end

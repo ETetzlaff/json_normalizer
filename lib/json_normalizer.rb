@@ -10,27 +10,23 @@ class Json_Normalizer
     @result = {}
   end
 
-  def is_value_raised?(value)
-    value.respond_to?(:each)
-  end
-
   def key_contained?(key)
-    @map.keys.each{ |k| @map[k].include?(key) ? true : false }
+    @map.keys.each{ |k| return true if @map[k].include?(key.to_s) }
+    return false
   end
 
   def fetch_key(key)
     @map.keys.each{ |k| return k if @map[k].include?(key) }
   end
 
-  # def judge_set(set)
-  #   if self.key_contained?(key)
-  #     json[self.fetch_key(key)] = json[key]
-  #     json.delete(key)
-  #   else
-  #     byebug
-  #     json[:misc].append({ key: json[key] })
-  #   end
-  # end
+  def swap_key(json, key)
+    if self.key_contained?(key)
+      json[self.fetch_key(key).first] = json[key]
+      json.delete(key)
+    else
+      # if we want to move out non-normalized keys into a different 'misc' key or something
+    end
+  end
 
   def translate(json)
     json = JSON.parse(json) if !json.is_a?(Hash)
@@ -38,27 +34,14 @@ class Json_Normalizer
       if json[key].respond_to?(:each)
         puts "Key: #{key} recursing..."
         self.translate(json[key])
-
-        if self.key_contained?(key)
-          json[self.fetch_key(key).first] = json[key]
-          json.delete(key)
-        else
-          byebug
-          json[:misc].append({ key: json[key] })
-        end
+        self.swap_key(json, key)
       else
-        if self.key_contained?(key)
-          json[self.fetch_key(key).first] = json[key]
-          json.delete(key)
-        else
-          byebug
-          json[:misc].append({ key: json[key] })
-        end
+        self.swap_key(json, key)
       end
     end
 
-    json
-    # @result
+    # json.map{ |k, v| [k.to_s, v] }.to_h
+    JSON.parse json.to_json
   end
 
 end

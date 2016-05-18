@@ -17,6 +17,10 @@ describe Json_Normalizer do
     expect(@normalizer.key_contained?(:given)).to be_truthy
   end
 
+  it 'returns false if key is not contained anywhere in map' do
+    expect(@normalizer.key_contained?(:not_given)).to be_falsey
+  end
+
   it 'fetches the normalized key' do
     expect(@normalizer.fetch_key(:given).first).to eql "returned"
   end
@@ -26,6 +30,14 @@ describe Json_Normalizer do
   end
 
   it 'successfully translates nested' do
-    expect(@normalizer.translate({morphed: {to: 'test'}})).to eql('something')
+    expect(@normalizer.translate({given: {given: 'test'}})).to eql(JSON.parse({returned: {returned: 'test'}}.to_json))
+  end
+
+  it 'successfully translates n sub documents' do
+    expect(@normalizer.translate({given: {given: {given: 'test'}}})).to eql(JSON.parse({returned: {returned: {returned: 'test'}}}.to_json))
+  end
+
+  it 'retains key values of items not contained in the map' do
+    expect(@normalizer.translate({test: {test_two: 'test'}})).to eql(JSON.parse({test: {test_two: 'test'}}.to_json))
   end
 end

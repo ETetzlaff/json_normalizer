@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Json_Normalizer do
   before :each do
-    @normalizer = Json_Normalizer.new({returned: [:given]}.to_json)
+    @normalizer = Json_Normalizer.new({returned: ["given"]}.to_json)
   end
 
   it 'successfully creates the normalizer' do
@@ -10,7 +10,7 @@ describe Json_Normalizer do
   end
 
   it 'sets map' do
-    expect(@normalizer.instance_variable_get(:@map)).to eql(JSON.parse({ returned: [:given] }.to_json))
+    expect(@normalizer.instance_variable_get(:@map)).to eql(JSON.parse({ "returned": ["given"] }.to_json))
   end
 
   it 'can check if a key is contained in the map' do
@@ -26,18 +26,18 @@ describe Json_Normalizer do
   end
 
   it 'successfully translates given the mapping' do
-    expect(@normalizer.translate({given: 'test'})).to eql(JSON.parse({returned: 'test'}.to_json))
+    expect(@normalizer.translate(JSON.parse({"given": 'test'}.to_json))).to eql(JSON.parse({"returned": 'test'}.to_json))
   end
 
   it 'successfully translates nested' do
-    expect(@normalizer.translate({given: {given: 'test'}})).to eql(JSON.parse({returned: {returned: 'test'}}.to_json))
+    expect(@normalizer.translate(JSON.parse({"given": {"given": 'test'}}.to_json))).to eql(JSON.parse({"returned": {"returned": 'test'}}.to_json))
   end
 
   it 'successfully translates n sub documents' do
-    expect(@normalizer.translate({given: {given: {given: 'test'}}})).to eql(JSON.parse({returned: {returned: {returned: 'test'}}}.to_json))
+    expect(@normalizer.translate(JSON.parse({"given": {"given": {"given": 'test'}}}.to_json))).to eql(JSON.parse({returned: {returned: {returned: 'test'}}}.to_json))
   end
 
   it 'retains key values of items not contained in the map' do
-    expect(@normalizer.translate({test: {test_two: 'test'}})).to eql(JSON.parse({test: {test_two: 'test'}}.to_json))
+    expect(@normalizer.translate(JSON.parse({"test": {"test_two": "test"}}.to_json))).to eql(JSON.parse({"test": {"test_two": "test"}}.to_json))
   end
 end

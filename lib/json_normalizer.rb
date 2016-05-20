@@ -19,15 +19,6 @@ class JsonNormalizer
     @map.keys.each{ |k| return k if @map[k].include?(key) }
   end
 
-  # def swap_key(json, key)
-  #   if self.key_contained?(key)
-  #     json[self.fetch_key(key).first] = json[key]
-  #     json.delete(key)
-  #   else
-  #     # if we want to move out non-normalized keys into a different 'misc' key or something
-  #   end
-  # end
-
   def swap_key(json, key)
     if self.key_contained?(key)
       json[self.fetch_key(key)] = json[key]
@@ -42,7 +33,6 @@ class JsonNormalizer
       json.each do |j|
         j.keys.each do |key|
           if j[key].respond_to?(:each)
-            puts "Key: #{key} recursing..."
             self.translate(j[key])
             self.swap_key(j, key)
           else
@@ -53,7 +43,6 @@ class JsonNormalizer
     else
       json.keys.each do |key|
         if json[key].respond_to?(:each)
-          puts "Key: #{key} recursing..."
           self.translate(json[key])
           self.swap_key(json, key)
         else
@@ -62,8 +51,6 @@ class JsonNormalizer
       end
     end
 
-    # json.map{ |k, v| [k.to_s, v] }.to_h
-    # JSON.parse json.to_json
     json
   end
 

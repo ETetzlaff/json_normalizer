@@ -15,6 +15,6 @@ normalizer = Json_Normalizer.new(mapping.to_json)
 
 doc_to_be_normalized = { given: { keys: 'both keys will be translated!' } }
 
-normalized = normalizer.translate(doc_to_be_normalized)
+normalized = normalizer.translate(doc_to_be_normalized.to_json)
 ```
 

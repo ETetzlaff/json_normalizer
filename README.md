@@ -11,7 +11,7 @@ require 'json_normalizer'
 
 mapping = { returned_key: [:given, :keys] }
 
-normalizer = Json_Normalizer.new(mapping.to_json)
+normalizer = JsonNormalizer.new(mapping.to_json)
 
 doc_to_be_normalized = { given: { keys: 'both keys will be translated!' } }
 

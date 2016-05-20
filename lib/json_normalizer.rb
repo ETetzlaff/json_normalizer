@@ -1,7 +1,7 @@
 require 'json'
 require 'byebug'
 
-class Json_Normalizer
+class JsonNormalizer
 
   # Init requires pre defined JSON map.
   # Ex. { "this_key": ["morphed", "to", "this_key"] }

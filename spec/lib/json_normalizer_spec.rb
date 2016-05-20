@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe Json_Normalizer do
+describe JsonNormalizer do
   before :each do
-    @normalizer = Json_Normalizer.new({returned: ["given"]}.to_json)
+    @normalizer = JsonNormalizer.new({returned: ["given"]}.to_json)
   end
 
   it 'successfully creates the normalizer' do
-    expect(@normalizer).to be_an_instance_of Json_Normalizer
+    expect(@normalizer).to be_an_instance_of JsonNormalizer
   end
 
   it 'sets map' do

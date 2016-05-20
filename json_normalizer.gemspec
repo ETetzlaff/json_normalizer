@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'json_normalizer'
-  s.version = '0.1.0'
+  s.version = '0.2.0'
   s.date = '2016-05-01'
   s.summary = 'Normalizes JSON Doc Schema.'
   s.description = 'Normalizes disparate JSON Schemas to Specified Schema'

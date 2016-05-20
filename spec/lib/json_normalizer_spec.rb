@@ -37,6 +37,10 @@ describe Json_Normalizer do
     expect(@normalizer.translate(JSON.parse({"given": {"given": {"given": 'test'}}}.to_json))).to eql(JSON.parse({returned: {returned: {returned: 'test'}}}.to_json))
   end
 
+  it 'successfully translates arrays as values' do
+    expect(@normalizer.translate(JSON.parse({"given": [{"given": 'test'}]}.to_json))).to eql(JSON.parse({"returned": [{"returned": 'test'}]}.to_json))
+  end
+
   it 'retains key values of items not contained in the map' do
     expect(@normalizer.translate(JSON.parse({"test": {"test_two": "test"}}.to_json))).to eql(JSON.parse({"test": {"test_two": "test"}}.to_json))
   end

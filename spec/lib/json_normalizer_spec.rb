@@ -44,4 +44,8 @@ describe JsonNormalizer do
   it 'retains key values of items not contained in the map' do
     expect(@normalizer.translate(JSON.parse({"test": {"test_two": "test"}}.to_json))).to eql(JSON.parse({"test": {"test_two": "test"}}.to_json))
   end
+
+  it 'successfully translates values that are arrays of arrays' do
+    expect(@normalizer.translate(JSON.parse({"testing": [[{"stuff": "things"}],[{"stuff1":  "things1"}]]}.to_json))).to eql(JSON.parse({"testing": [[{"stuff": "things"}], [{"stuff1": "things1"}]]}.to_json))
+  end
 end

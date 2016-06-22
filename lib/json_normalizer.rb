@@ -26,31 +26,24 @@ class JsonNormalizer
   end
 
   def translate(json)
-    # json = JSON.parse(json) if !json.is_a?(Hash)
     json = JSON.parse(json) if ![Hash, Array].include?(json.class)
     if json.is_a?(Array)
       json.each do |j|
-        j.keys.each do |key|
-          if j[key].respond_to?(:each)
-            self.translate(j[key])
-            self.swap_key(j, key)
-          else
-            self.swap_key(j, key)
-          end
-        end
+        translate(j)
       end
     else
       json.keys.each do |key|
-        if json[key].respond_to?(:each)
-          self.translate(json[key])
-          self.swap_key(json, key)
+        if json[key].is_a?(Array)
+          translate(json[key])
+          swap_key(json,key)
         else
-          self.swap_key(json, key)
+          if json[key].respond_to?(:keys)
+            translate(json[key])
+          end
+          swap_key(json,key)
         end
       end
     end
-
     json
   end
-
 end

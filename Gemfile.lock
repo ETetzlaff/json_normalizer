@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    json_normalizer (0.3.1)
+    json_normalizer (0.3.2)
 
 GEM
   remote: https://rubygems.org/
@@ -71,4 +71,4 @@ DEPENDENCIES
   rspec
 
 BUNDLED WITH
-   1.12.4
+   1.12.5

@@ -1,4 +1,5 @@
 # JSON Normalizer
+![alt text](https://travis-ci.org/ETetzlaff/json_normalizer.svg?branch=master)
 
 ### What is it?
 Json Normalizer is a gem that normalizes keys on json documents from disparate sources.

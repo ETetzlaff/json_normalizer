@@ -48,4 +48,8 @@ describe JsonNormalizer do
   it 'successfully translates values that are arrays of arrays' do
     expect(@normalizer.translate(JSON.parse({"testing": [[{"stuff": "things"}],[{"stuff1":  "things1"}]]}.to_json))).to eql(JSON.parse({"testing": [[{"stuff": "things"}], [{"stuff1": "things1"}]]}.to_json))
   end
+
+  it 'can translate array of docs' do
+    expect(@normalizer.translate([JSON.parse({"given": "something1"}.to_json), JSON.parse({"given": "something2"}.to_json)])).to match([JSON.parse({"returned": "something1"}.to_json), JSON.parse({"returned": "something2"}.to_json)])
+  end
 end

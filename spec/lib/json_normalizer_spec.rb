@@ -25,19 +25,19 @@ describe JsonNormalizer do
     expect(@normalizer.fetch_key(:given).first).to eql "returned"
   end
 
-  it 'successfully translates given the mapping' do
+  it 'translates given the mapping' do
     expect(@normalizer.translate(JSON.parse({"given": 'test'}.to_json))).to eql(JSON.parse({"returned": 'test'}.to_json))
   end
 
-  it 'successfully translates nested' do
+  it 'translates nested' do
     expect(@normalizer.translate(JSON.parse({"given": {"given": 'test'}}.to_json))).to eql(JSON.parse({"returned": {"returned": 'test'}}.to_json))
   end
 
-  it 'successfully translates n sub documents' do
+  it 'translates n sub documents' do
     expect(@normalizer.translate(JSON.parse({"given": {"given": {"given": 'test'}}}.to_json))).to eql(JSON.parse({returned: {returned: {returned: 'test'}}}.to_json))
   end
 
-  it 'successfully translates arrays as values' do
+  it 'translates arrays as values' do
     expect(@normalizer.translate(JSON.parse({"given": [{"given": 'test'}]}.to_json))).to eql(JSON.parse({"returned": [{"returned": 'test'}]}.to_json))
   end
 
@@ -45,7 +45,11 @@ describe JsonNormalizer do
     expect(@normalizer.translate(JSON.parse({"test": {"test_two": "test"}}.to_json))).to eql(JSON.parse({"test": {"test_two": "test"}}.to_json))
   end
 
-  it 'successfully translates values that are arrays of arrays' do
+  it 'translates values that are arrays of arrays' do
     expect(@normalizer.translate(JSON.parse({"testing": [[{"stuff": "things"}],[{"stuff1":  "things1"}]]}.to_json))).to eql(JSON.parse({"testing": [[{"stuff": "things"}], [{"stuff1": "things1"}]]}.to_json))
+  end
+
+  it 'can return a list of keys provided in json not in the defined mapping' do
+    expect(@normalizer.fetch_new_keys(JSON.parse({"testing": {"testing1": "test"}}.to_json)).sort).to match(["testing", "testing1"].sort)
   end
 end

@@ -46,4 +46,10 @@ class JsonNormalizer
     end
     json
   end
+
+  def translate_array_of_docs(json_docs)
+    results = []
+    json_docs.each { |doc| results << translate(doc) }
+    results
+  end
 end

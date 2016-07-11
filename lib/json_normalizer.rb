@@ -5,28 +5,40 @@ class JsonNormalizer
   # Init requires pre defined JSON map.
   # Ex. { "this_key": ["morphed", "to", "this_key"] }
   def initialize(map)
-    @map = JSON.parse(map)
-    @result = {}
+    @map = make_hash(map)
+    @mapped_keys = mapped_keys
+    @keymap = keymap
   end
 
   def key_contained?(key)
-    @map.keys.each{ |k| return true if @map[k].include?(key.to_s) }
-    return false
+    @mapped_keys.include?(key)
   end
 
   def fetch_key(key)
-    @map.keys.each{ |k| return k if @map[k].include?(key) }
+    @keymap[key]
   end
 
   def swap_key(json, key)
     if self.key_contained?(key)
-      json[self.fetch_key(key)] = json[key]
-      json.delete(key)
+      json[fetch_key(key)] = json.delete(key)
     end
   end
 
+  def batch_translate(batch=[])
+    batch.map!{|item| make_hash(item) }.map!{|item| recur_translate(item) }
+    batch
+  end
+
+  def make_hash(item)
+    [Hash, Array].include?(item.class) ? item : JSON.parse(item)
+  end
+
   def translate(json)
-    json = JSON.parse(json) if ![Hash, Array].include?(json.class)
+    json = make_hash(json)
+    recur_translate(json)
+  end
+
+  def recur_translate(json)
     if json.is_a?(Array)
       json.each do |j|
         translate(j)
@@ -45,5 +57,16 @@ class JsonNormalizer
       end
     end
     json
+  end
+
+  ##### SETTERS #####
+  def keymap
+    km = {}
+    @map.each {|k,v| v.each{ |old_key| km.merge!({old_key => k}) } }
+    km
+  end
+
+  def mapped_keys
+    @map.values.flatten
   end
 end

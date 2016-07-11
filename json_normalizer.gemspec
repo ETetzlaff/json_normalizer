@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.files = ['lib/json_normalizer.rb']
   s.homepage = 'http://rubygems.org/gems/json_normalizer'
   s.license = 'MIT'
+  s.required_ruby_version = '>= 2.3.0'
 
   s.add_development_dependency "rspec"
   s.add_development_dependency "guard"

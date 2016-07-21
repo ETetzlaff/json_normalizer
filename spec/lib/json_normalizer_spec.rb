@@ -77,10 +77,10 @@ describe JsonNormalizer do
   end
 
   it 'parses keys with colons and string value' do
-    @normalizer.translate('{"Key with colon:" : "string val"}')
+    expect(@normalizer.translate('{"Key with colon:":"string val"}')).to eql({'Key with colon:' => 'string val'})
   end
 
   it 'parses keys with colons and array value' do
-    @normalizer.translate('{"Key with colon:" : ["array val1", "array val2"]}')
+    expect(@normalizer.translate('{"Key with colon:" : ["array val1", "array val2"]}')).to eql({'Key with colon:' => ['array val1', 'array val2']})
   end
 end

@@ -41,7 +41,7 @@ class JsonNormalizer
   def recur_translate(json)
     if json.is_a?(Array)
       json.each do |j|
-        translate(j)
+        translate(j) if [Hash, Array].include?(j.class)
       end
     else
       json.keys.each do |key|

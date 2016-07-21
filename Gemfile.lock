@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    json_normalizer (0.3.3)
+    json_normalizer (0.4.0)
 
 GEM
   remote: https://rubygems.org/

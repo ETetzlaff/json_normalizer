@@ -75,4 +75,12 @@ describe JsonNormalizer do
     expect(@normalizer.make_hash("{\"Testing\":\"VALUE_TESTING\",\"Key Mapping\":\"VALUEKEYMAP\",\"Some Key Here\":\"ARBITRARY\"}").class).to eql(Hash)
     expect(@normalizer.make_hash("[{\"Testing\":\"VALUE_TESTING\",\"Key Mapping\":\"VALUEKEYMAP\",\"Some Key Here\":\"ARBITRARY\"}]").class).to eql(Array)
   end
+
+  it 'parses keys with colons and string value' do
+    expect(@normalizer.translate('{"Key with colon:":"string val"}')).to eql({'Key with colon:' => 'string val'})
+  end
+
+  it 'parses keys with colons and array value' do
+    expect(@normalizer.translate('{"Key with colon:" : ["array val1", "array val2"]}')).to eql({'Key with colon:' => ['array val1', 'array val2']})
+  end
 end

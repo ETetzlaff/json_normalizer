@@ -25,7 +25,7 @@ class JsonNormalizer
   end
 
   def batch_translate(batch=[])
-    batch.map!{|item| make_hash(item) }.map!{|item| recur_translate(item) }
+    batch.map!{|item| make_hash(item) }.map!{|item| deep_translate(item) }
     batch
   end
 
@@ -35,10 +35,10 @@ class JsonNormalizer
 
   def translate(json)
     json = make_hash(json)
-    recur_translate(json)
+    deep_translate(json)
   end
 
-  def recur_translate(json)
+  def deep_translate(json)
     if json.is_a?(Array)
       json.each do |j|
         translate(j) if [Hash, Array].include?(j.class)
